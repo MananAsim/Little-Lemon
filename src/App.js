@@ -103,25 +103,39 @@ const Nav = () => {
 };
 
 // 2. BookingForm (Moved inside BookingPage normally, but kept separate for clarity)
+// 2. BookingForm (Updated with Validation)
 const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState("Birthday");
 
+  // REACT VALIDATION LOGIC
+  // We check if the form is valid on every render
+  const isDateValid = date !== "";
+  const isTimeValid = time !== "";
+  const isGuestsValid = guests >= 1 && guests <= 10;
+  const isOccasionValid = occasion !== "";
+
+  // The button is enabled only if ALL checks pass
+  const isFormValid = isDateValid && isTimeValid && isGuestsValid && isOccasionValid;
+
   const handleDateChange = (e) => {
     setDate(e.target.value);
-    // Step 2: Update times based on selected date
     dispatch({ type: 'UPDATE_TIMES', payload: new Date(e.target.value) });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    submitForm({ date, time, guests, occasion });
+    // Double check before submitting
+    if (isFormValid) {
+      submitForm({ date, time, guests, occasion });
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-xl mx-auto">
+      {/* Date Field */}
       <div>
         <label htmlFor="res-date" className="block text-gray-700 font-bold mb-2">Choose date</label>
         <input
@@ -129,18 +143,20 @@ const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
           id="res-date"
           value={date}
           onChange={handleDateChange}
-          required
-          className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-[#F4CE14] outline-none"
+          required // HTML5 Validation
+          className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-[#F4CE14] outline-none invalid:border-red-500"
         />
       </div>
+
+      {/* Time Field */}
       <div>
         <label htmlFor="res-time" className="block text-gray-700 font-bold mb-2">Choose time</label>
         <select
           id="res-time"
           value={time}
           onChange={(e) => setTime(e.target.value)}
-          required
-          className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-[#F4CE14] outline-none"
+          required // HTML5 Validation
+          className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-[#F4CE14] outline-none invalid:border-red-500"
         >
           <option value="">Select a time</option>
           {availableTimes.map((t) => (
@@ -148,33 +164,48 @@ const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
           ))}
         </select>
       </div>
+
+      {/* Guests Field */}
       <div>
         <label htmlFor="guests" className="block text-gray-700 font-bold mb-2">Number of guests</label>
         <input
           type="number"
           placeholder="1"
-          min="1"
-          max="10"
+          min="1"  // HTML5 Validation
+          max="10" // HTML5 Validation
           id="guests"
           value={guests}
           onChange={(e) => setGuests(e.target.value)}
-          required
-          className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-[#F4CE14] outline-none"
+          required // HTML5 Validation
+          className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-[#F4CE14] outline-none invalid:border-red-500"
         />
       </div>
+
+      {/* Occasion Field */}
       <div>
         <label htmlFor="occasion" className="block text-gray-700 font-bold mb-2">Occasion</label>
         <select
           id="occasion"
           value={occasion}
           onChange={(e) => setOccasion(e.target.value)}
+          required // HTML5 Validation
           className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-[#F4CE14] outline-none"
         >
           <option>Birthday</option>
           <option>Anniversary</option>
         </select>
       </div>
-      <button type="submit" className="w-full bg-[#F4CE14] text-[#495E57] font-bold text-xl py-4 rounded-xl hover:bg-[#ffe15d] transition-colors shadow-md">
+
+      {/* Submit Button with Dynamic Styling */}
+      <button
+        type="submit"
+        disabled={!isFormValid} // React Validation: Disables button if invalid
+        className={`w-full font-bold text-xl py-4 rounded-xl shadow-md transition-colors ${isFormValid
+            ? "bg-[#F4CE14] text-[#495E57] hover:bg-[#ffe15d] cursor-pointer" // Valid Style
+            : "bg-gray-300 text-gray-500 cursor-not-allowed" // Invalid Style
+          }`}
+        aria-label="On Click"
+      >
         Make Your reservation
       </button>
     </form>
