@@ -201,8 +201,8 @@ const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
         type="submit"
         disabled={!isFormValid} // React Validation: Disables button if invalid
         className={`w-full font-bold text-xl py-4 rounded-xl shadow-md transition-colors ${isFormValid
-            ? "bg-[#F4CE14] text-[#495E57] hover:bg-[#ffe15d] cursor-pointer" // Valid Style
-            : "bg-gray-300 text-gray-500 cursor-not-allowed" // Invalid Style
+          ? "bg-[#F4CE14] text-[#495E57] hover:bg-[#ffe15d] cursor-pointer" // Valid Style
+          : "bg-gray-300 text-gray-500 cursor-not-allowed" // Invalid Style
           }`}
         aria-label="On Click"
       >
@@ -312,19 +312,67 @@ const CallToAction = () => (
   </header>
 );
 
-const Specials = () => (
-  <section className="py-16 px-4 max-w-6xl mx-auto">
-    <div className="flex justify-between items-center mb-8"><h2 className="text-4xl font-extrabold">Specials</h2><button className="bg-[#F4CE14] font-bold py-3 px-8 rounded-xl">Online Menu</button></div>
-    <div className="grid md:grid-cols-3 gap-8">
-      {['Greek Salad', 'Bruschetta', 'Lemon Dessert'].map((item, i) => (
-        <article key={i} className="bg-[#EDEFEE] rounded-t-2xl shadow-lg overflow-hidden">
-          <div className="h-48 bg-gray-300"><img src={`https://source.unsplash.com/random/800x600?food,${i}`} alt={item} className="w-full h-full object-cover" /></div>
-          <div className="p-6"><h3 className="font-bold text-xl mb-2">{item}</h3><p className="text-gray-600 mb-4">Delicious traditional recipe.</p><button className="font-bold flex items-center gap-2">Order <ShoppingBag size={16} /></button></div>
-        </article>
-      ))}
-    </div>
-  </section>
-);
+// 3. Specials Component (Updated with Real Images)
+// 3. Specials Component (Fixed Images)
+// 3. Specials Component (Final Image Fix)
+const Specials = () => {
+  const specialsData = [
+    {
+      name: 'Greek Salad',
+      price: '$12.99',
+      image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
+    },
+    {
+      name: 'Bruschetta',
+      price: '$5.99',
+      // New Image: High quality Bruschetta from Pexels
+      image: 'https://images.pexels.com/photos/566566/pexels-photo-566566.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    },
+    {
+      name: 'Lemon Dessert',
+      price: '$5.00',
+      image: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
+    }
+  ];
+
+  return (
+    <section className="py-16 px-4 max-w-6xl mx-auto">
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-4xl font-extrabold text-[#333333]">Specials</h2>
+        <button className="bg-[#F4CE14] text-[#495E57] font-bold py-3 px-8 rounded-xl hover:bg-[#ffe15d] transition-colors shadow-md">
+          Online Menu
+        </button>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-8">
+        {specialsData.map((item, i) => (
+          <article key={i} className="bg-[#EDEFEE] rounded-t-2xl shadow-lg overflow-hidden flex flex-col h-full hover:shadow-xl transition-shadow duration-300">
+            <div className="h-48 overflow-hidden">
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+            <div className="p-6 flex flex-col flex-grow">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="font-bold text-xl">{item.name}</h3>
+                <span className="text-[#EE9972] font-bold">{item.price}</span>
+              </div>
+              <p className="text-[#495E57] mb-6 flex-grow text-sm">
+                Delicious traditional recipe served with a modern twist.
+              </p>
+              <button className="font-bold text-sm flex items-center gap-2 mt-auto hover:translate-x-1 transition-transform">
+                Order <ShoppingBag size={16} />
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+};
+
 
 const CustomersSay = () => <section className="bg-[#FBDABB] py-20 text-center"><h2 className="text-4xl font-extrabold mb-8">Testimonials</h2><p>Customer reviews coming soon...</p></section>;
 
